@@ -7,7 +7,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 import torch.nn.functional as F
 
-from transformers import BertForTokenClassification
+from transformers import BertForTokenClassification, BertModel
 from .crf import ConditionalRandomField as CRF
 from .crf import allowed_transitions
 from .pooler import Pooler
@@ -259,6 +259,7 @@ class BertCRFForRoleLabeling(BertForTokenClassification):
     ):
         super(BertCRFForRoleLabeling, self).__init__(config)
         self.use_cls = use_cls
+        self.bert = BertModel(config)
         self.pooler = Pooler(config)
         self.prod_pool_type = prod_pooler
 

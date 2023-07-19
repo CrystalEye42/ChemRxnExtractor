@@ -184,7 +184,9 @@ class RxnExtractor(object):
         examples = []
         num_rxns_per_sent = []
         for guid, (sent, prod_labels) in enumerate(zip(tokenized_sents, products)):
-            assert len(sent) == len(prod_labels)
+            assert len(sent) >= len(prod_labels)
+            if len(sent) > len(prod_labels):
+                prod_labels.extend(['O']*(len(sent)-len(prod_labels)))
             prods = get_entities(prod_labels)
             num_rxns_per_sent.append(len(prods))
             for i, (etype, ss, se) in enumerate(prods):
